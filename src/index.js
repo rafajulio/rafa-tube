@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import Search from './pages/Search';
+import {RafaTube} from './App';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Search />
+    <RafaTube />
   </React.StrictMode>,
   document.getElementById('root')
 );
