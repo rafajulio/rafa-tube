@@ -1,4 +1,5 @@
 import React from 'react';
+import 'rodal/lib/rodal.css';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import {ThemeProvider} from '@material-ui/styles';
 import AppBar from '@material-ui/core/AppBar';

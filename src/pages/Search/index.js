@@ -4,6 +4,7 @@ import {ThemeProvider} from '@material-ui/styles';
 import {theme, styles} from '../../util/material-ui-helper';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
+import Rodal from 'rodal';
 import './style.css';
 
 const Search = (props) => {
@@ -31,6 +32,8 @@ const Search = (props) => {
 
   const [searchTerm, setSearchTerm] = React.useState('');
   const [searchEnabled, setSearchEnabled] = React.useState(false);
+
+  const [isModalVisible, setModalVisible] = React.useState(false);
 
   React.useEffect(() => {
     if (
@@ -60,12 +63,18 @@ const Search = (props) => {
             onChange={(event) => {
               setSearchTerm(event.target.value);
             }}
+            onKeyPress={(event) => {
+              if (event.key === 'Enter' && searchEnabled) setModalVisible(true);
+            }}
           />
 
           <IconButton
             aria-label="search"
             disabled={!searchEnabled}
             style={{marginLeft: 8, width: 55, height: 55}}
+            onClick={() => {
+              setModalVisible(true);
+            }}
           >
             <SearchIcon />
           </IconButton>
@@ -97,8 +106,45 @@ const Search = (props) => {
           </div>
         ))}
       </div>
+
+      <SearchModal
+        visible={isModalVisible}
+        searchTerm={searchTerm}
+        onClose={() => setModalVisible(false)}
+      />
     </div>
   );
 };
 
 export default Search;
+
+const SearchModal = (props) => {
+  return (
+    <div style={{zIndex: 50000}}>
+      <Rodal
+        visible={props.visible}
+        closeOnEsc
+        onClose={() => {
+          props.onClose();
+        }}
+        customStyles={{
+          padding: 0,
+          overflow: 'hidden',
+          width: '80%',
+          height: '80%',
+          backgroundColor: 'rgb(40, 40, 40)',
+        }}
+      >
+        <div
+          style={{
+            height: '100%',
+            width: '100%',
+            overflow: 'auto',
+          }}
+        >
+          {props.searchTerm}
+        </div>
+      </Rodal>
+    </div>
+  );
+};
