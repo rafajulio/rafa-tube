@@ -1,12 +1,14 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import {ThemeProvider} from '@material-ui/styles';
-import {theme} from '../../util/material-ui-helper';
+import {theme, styles} from '../../util/material-ui-helper';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
 import './style.css';
 
 const Search = (props) => {
+  const classes = styles();
+
   const days = [
     {key: 'sunday', name: 'DOM'},
     {key: 'monday', name: 'SEG'},
@@ -52,8 +54,9 @@ const Search = (props) => {
           <TextField
             variant="outlined"
             label="Termo da Busca do YouTube"
-            className="search"
+            className={classes.textField}
             fullWidth
+            size="small"
             onChange={(event) => {
               setSearchTerm(event.target.value);
             }}
@@ -62,7 +65,7 @@ const Search = (props) => {
           <IconButton
             aria-label="search"
             disabled={!searchEnabled}
-            style={{marginLeft: 8, width: 55}}
+            style={{marginLeft: 8, width: 55, height: 55}}
           >
             <SearchIcon />
           </IconButton>

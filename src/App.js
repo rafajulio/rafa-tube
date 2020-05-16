@@ -12,7 +12,7 @@ export const RafaTube = () => {
       <div style={{height: '100%', width: '100%'}}>
         <ThemeProvider theme={theme}>
           <AppBar position="sticky" style={{background: 'rgb(40,40,40)'}}>
-            <Toolbar variant="dense">Photos</Toolbar>
+            <Toolbar variant="dense">RafaTube (fazer LOGO)</Toolbar>
           </AppBar>
         </ThemeProvider>
         <Switch>
