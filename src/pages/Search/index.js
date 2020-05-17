@@ -1,6 +1,6 @@
 import React from 'react';
 import {ThemeProvider} from '@material-ui/styles';
-import {theme, styles} from '../../util/materialUIHelper';
+import {theme, styles, StyledCircularProgress} from '../../util/materialUIHelper';
 import {getVideos} from '../../webservices/youTubeServices';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import FormControl from '@material-ui/core/FormControl';
@@ -133,8 +133,15 @@ const Search = (props) => {
 export default Search;
 
 const SearchModal = (props) => {
+  const [loading, setLoading] = React.useState(true);
+  const [continuousDays, setContinuousDays] = React.useState(null);
+  const [sortedVideos, setSortedVideos] = React.useState(null);
+  const [titleOccurrences, setTitleOccurrences] = React.useState([]);
+  const [descriptionOccurrences, setDescriptionOccurrences] = React.useState([]);
+
   React.useEffect(() => {
     async function _getVideos() {
+      setLoading(true);
       // TODO Try catch pra tratar exceção
       let videos = await getVideos(props.searchTerm);
       let allMinutes = 0;
@@ -179,20 +186,24 @@ const SearchModal = (props) => {
       }
 
       // Verifica ocorrências de uma mesma palavra nos títulos e descrições
-      console.log({
-        titleOccurrences: countTitleKeyWordsArray.sort((a, b) =>
+      setTitleOccurrences(
+        countTitleKeyWordsArray.sort((a, b) =>
           a.occurrences > b.occurrences ? -1 : b.occurrences > a.occurrences ? 1 : 0
-        ),
-        descriptionOccurences: countDescriptionKeyWordsArray.sort((a, b) =>
+        )
+      );
+      setDescriptionOccurrences(
+        countDescriptionKeyWordsArray.sort((a, b) =>
           a.occurrences > b.occurrences ? -1 : b.occurrences > a.occurrences ? 1 : 0
-        ),
-      });
+        )
+      );
 
       // Conversão de Minutos Bruta
-      console.log(convertMinutesToContinuousDays(allMinutes));
+      setContinuousDays(convertMinutesToContinuousDays(allMinutes));
 
       // Conversão Considerando Disponibilidade do Usuário
-      console.log(sortVideosConsideringDailyAvailability(videos, props.dailyAvailability));
+      setSortedVideos(sortVideosConsideringDailyAvailability(videos, props.dailyAvailability));
+
+      setLoading(false);
     }
 
     if (props.visible) {
@@ -204,9 +215,9 @@ const SearchModal = (props) => {
     <div style={{zIndex: 50000}}>
       <Rodal
         visible={props.visible}
-        closeOnEsc
+        closeOnEsc={loading ? false : true}
         onClose={() => {
-          props.onClose();
+          if (!loading) props.onClose();
         }}
         customStyles={{
           padding: 0,
@@ -221,9 +232,81 @@ const SearchModal = (props) => {
             height: '100%',
             width: '100%',
             overflow: 'auto',
+            display: 'flex',
+            flexDirection: 'column',
           }}
         >
-          {props.searchTerm}
+          {!loading ? (
+            <>
+              <div className="modalHeader">
+                <span className="label">Termo da Busca do YouTube</span>
+                <span className="value">{props.searchTerm}</span>
+                <div className="daysInfo">
+                  <div className="dayInfo">
+                    <span className="label" style={{textAlign: 'left'}}>
+                      Dias Para Finalizar Em Reprodução Com Disponibilidade
+                    </span>
+                    <span className="value" style={{textAlign: 'left'}}>
+                      {sortedVideos.days} dias
+                    </span>
+                  </div>
+                  <div className="dayInfo">
+                    <span className="label" style={{textAlign: 'right'}}>
+                      Dias Para Finalizar Em Reprodução Contínua
+                    </span>
+                    <span className="value" style={{textAlign: 'right'}}>
+                      {continuousDays}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                style={{
+                  marginTop: 32,
+                  marginBottom: 32,
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-evenly',
+                }}
+              >
+                <div className="dayInfo">
+                  <span className="label">
+                    Cinco Palavras Mais Encontradas Nos <b>Títulos</b>
+                  </span>
+                  <span className="value">
+                    {titleOccurrences
+                      .slice(0, 5)
+                      .map((word) => word.word)
+                      .join(', ')}
+                  </span>
+                </div>
+                <div className="dayInfo">
+                  <span className="label">
+                    Cinco Palavras Mais Encontradas Nas <b>Descrições</b>
+                  </span>
+                  <span className="value">
+                    {descriptionOccurrences
+                      .slice(0, 5)
+                      .map((word) => word.word)
+                      .join(', ')}
+                  </span>
+                </div>
+              </div>
+            </>
+          ) : (
+            <div
+              style={{
+                width: '100%',
+                height: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <StyledCircularProgress size={80} />
+            </div>
+          )}
         </div>
       </Rodal>
     </div>

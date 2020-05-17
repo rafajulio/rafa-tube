@@ -1,4 +1,5 @@
-import {makeStyles, createMuiTheme} from '@material-ui/core/styles';
+import {makeStyles, createMuiTheme, withStyles} from '@material-ui/core/styles';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 export const theme = createMuiTheme({
   palette: {
@@ -21,3 +22,9 @@ export const styles = makeStyles({
     },
   },
 });
+
+export const StyledCircularProgress = withStyles({
+  root: {
+    color: 'rgb(252, 13, 27)',
+  },
+})(CircularProgress);

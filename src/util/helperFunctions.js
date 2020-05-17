@@ -5,12 +5,14 @@ export function convertMinutesToContinuousDays(minutes) {
   let m = Math.floor(minutes % 60);
   let s = ((minutes - d * 24 * 60 - h * 60 - m) * 60).toFixed(2);
 
-  return {
-    days: d,
-    hours: h,
-    minutes: m,
-    seconds: parseFloat(s),
-  };
+  let finalStringArray = [];
+
+  if (d > 0) finalStringArray.push(`${d.toFixed(0)} dias`);
+  if (h > 0) finalStringArray.push(`${h.toFixed(0)} horas`);
+  if (m > 0) finalStringArray.push(`${m.toFixed(0)} minutos`);
+  if (s > 0) finalStringArray.push(`${parseFloat(s).toFixed(0)} segundos`);
+
+  return finalStringArray.slice(0, -1).join(', ') + ' e ' + finalStringArray.slice(-1);
 }
 
 function groupBy(xs, key) {

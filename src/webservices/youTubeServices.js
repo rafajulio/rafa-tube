@@ -4,7 +4,7 @@ import {parse, toSeconds} from 'iso8601-duration';
 export async function getVideos(query) {
   const totalItems = 200;
   const maxItems = 50;
-  const key = 'AIzaSyAQsugcVvdCaiOxq8s5AfZwTxuTOMDQWts';
+  const key = 'AIzaSyDvf4sqN2YyoHQt9cyKGm_o86Ui18YudiQ';
 
   let youTubeSearchItemsRetrieved = 0;
   let youTubeSearchItems = [];
@@ -20,6 +20,8 @@ export async function getVideos(query) {
     actualPageToken = response.nextPageToken;
     youTubeSearchItems = [...youTubeSearchItems, ...response.items];
     youTubeSearchItemsRetrieved += response.items.length;
+
+    if (!actualPageToken) break;
   } while (youTubeSearchItemsRetrieved < totalItems);
 
   let videoIdArray = youTubeSearchItems.reduce((resultArray, item, index) => {

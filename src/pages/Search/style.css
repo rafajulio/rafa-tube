@@ -77,3 +77,45 @@ h2 {
   font-size: 8px;
   bottom: 6px;
 }
+
+.modalHeader {
+  display: flex;
+  flex-direction: column;
+  width: -webkit-fill-available;
+  border-bottom: 1px solid rgb(60, 60, 60);
+  padding: 16px;
+  position: sticky;
+  top: 0;
+  background-color: rgb(40, 40, 40);
+  -webkit-box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.5);
+}
+
+.label {
+  font-size: 10px;
+  font-weight: 400;
+  text-align: center;
+  color: white;
+}
+
+.value {
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
+  color: white;
+}
+
+.modalHeader .daysInfo {
+  display: flex;
+  flex-direction: row;
+  margin-top: 16px;
+  width: -webkit-fill-available;
+  justify-content: space-between;
+}
+
+.dayInfo {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+}
