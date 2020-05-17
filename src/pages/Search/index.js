@@ -16,6 +16,7 @@ import {
 import Rodal from 'rodal';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+import RafaTubeLogo from '../../assets/svg/logo';
 import './style.css';
 
 const Search = (props) => {
@@ -63,6 +64,8 @@ const Search = (props) => {
 
   return (
     <div className="mainDiv">
+      <RafaTubeLogo width={'25%'} height="100%" style={{marginBottom: 32}} />
+
       <ThemeProvider theme={theme}>
         <div className="searchWrapper">
           <FormControl variant="outlined" fullWidth className={classes.textField}>
@@ -171,7 +174,7 @@ const SearchModal = (props) => {
         const countTitleKeyWords = countKeyWords(videoTitles);
         const countTitleKeyWordsArray = [];
         for (let key in countTitleKeyWords) {
-          if (!/^[^a-zA-Z0-9]+$/.test(key) && key !== '' && key.length >= 3) {
+          if (!/^[^a-zA-Z0-9]+$/.test(key) && key !== '' && key.length >= 4) {
             countTitleKeyWordsArray.push({
               word: key,
               occurrences: countTitleKeyWords[key],
@@ -182,7 +185,7 @@ const SearchModal = (props) => {
         const countDescriptionKeyWords = countKeyWords(videoDescriptions);
         const countDescriptionKeyWordsArray = [];
         for (let key in countDescriptionKeyWords) {
-          if (!/^[^a-zA-Z0-9]+$/.test(key) && key !== '' && key.length >= 3) {
+          if (!/^[^a-zA-Z0-9]+$/.test(key) && key !== '' && key.length >= 4) {
             countDescriptionKeyWordsArray.push({
               word: key,
               occurrences: countDescriptionKeyWords[key],
