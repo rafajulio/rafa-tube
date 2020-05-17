@@ -4,7 +4,7 @@ import {parse, toSeconds} from 'iso8601-duration';
 export async function getVideos(query) {
   const totalItems = 200;
   const maxItems = 50;
-  const key = 'AIzaSyDvf4sqN2YyoHQt9cyKGm_o86Ui18YudiQ';
+  const key = 'AIzaSyC5xNTheygg2xc6C7bZkAHIysoEZ795E08';
 
   let youTubeSearchItemsRetrieved = 0;
   let youTubeSearchItems = [];

@@ -119,3 +119,12 @@ h2 {
   flex-direction: column;
   width: fit-content;
 }
+
+.videoLink {
+  text-decoration: none;
+}
+
+.videoLink:hover {
+  text-decoration: underline;
+  text-decoration-color: rgb(100, 100, 100);
+}

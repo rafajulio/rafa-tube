@@ -116,6 +116,22 @@ export function sortVideosConsideringDailyAvailability(videos, dailyAvailability
     }
   });
 
+  if (
+    _sortedVideosArray
+      .map(function (e) {
+        return e.day;
+      })
+      .indexOf('1') === -1
+  ) {
+    _sortedVideosArray.unshift({
+      day: '1',
+      dayAvailability: dailyAvailability.sunday,
+      dayVideosDuration: 0,
+      videos: [],
+      weekday: 0,
+    });
+  }
+
   return {
     days: _sortedVideosArray.length,
     videosPerDay: _sortedVideosArray,

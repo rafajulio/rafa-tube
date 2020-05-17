@@ -14,6 +14,8 @@ import {
   countKeyWords,
 } from '../../util/helperFunctions';
 import Rodal from 'rodal';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 import './style.css';
 
 const Search = (props) => {
@@ -139,77 +141,96 @@ const SearchModal = (props) => {
   const [titleOccurrences, setTitleOccurrences] = React.useState([]);
   const [descriptionOccurrences, setDescriptionOccurrences] = React.useState([]);
 
+  const [error, setError] = React.useState(false);
+
   React.useEffect(() => {
     async function _getVideos() {
       setLoading(true);
-      // TODO Try catch pra tratar exceção
-      let videos = await getVideos(props.searchTerm);
-      let allMinutes = 0;
 
-      videos = videos.filter(
-        (video) =>
-          video.duration.minutes <=
-          props.dailyAvailability[
-            Object.keys(props.dailyAvailability).reduce((a, b) =>
-              props.dailyAvailability[a] > props.dailyAvailability[b] ? a : b
-            )
-          ]
-      );
+      try {
+        let videos = await getVideos(props.searchTerm);
+        let allMinutes = 0;
 
-      videos.forEach((video) => {
-        allMinutes += video.duration.minutes;
-      });
+        videos = videos.filter(
+          (video) =>
+            video.duration.minutes <=
+            props.dailyAvailability[
+              Object.keys(props.dailyAvailability).reduce((a, b) =>
+                props.dailyAvailability[a] > props.dailyAvailability[b] ? a : b
+              )
+            ]
+        );
 
-      const videoTitles = videos.map((video) => video.title).join(' ');
-      const videoDescriptions = videos.map((video) => video.description).join(' ');
+        videos.forEach((video) => {
+          allMinutes += video.duration.minutes;
+        });
 
-      const countTitleKeyWords = countKeyWords(videoTitles);
-      const countTitleKeyWordsArray = [];
-      for (let key in countTitleKeyWords) {
-        if (!/^[^a-zA-Z0-9]+$/.test(key) && key !== '' && key.length >= 3) {
-          countTitleKeyWordsArray.push({
-            word: key,
-            occurrences: countTitleKeyWords[key],
-          });
+        const videoTitles = videos.map((video) => video.title).join(' ');
+        const videoDescriptions = videos.map((video) => video.description).join(' ');
+
+        const countTitleKeyWords = countKeyWords(videoTitles);
+        const countTitleKeyWordsArray = [];
+        for (let key in countTitleKeyWords) {
+          if (!/^[^a-zA-Z0-9]+$/.test(key) && key !== '' && key.length >= 3) {
+            countTitleKeyWordsArray.push({
+              word: key,
+              occurrences: countTitleKeyWords[key],
+            });
+          }
         }
-      }
 
-      const countDescriptionKeyWords = countKeyWords(videoDescriptions);
-      const countDescriptionKeyWordsArray = [];
-      for (let key in countDescriptionKeyWords) {
-        if (!/^[^a-zA-Z0-9]+$/.test(key) && key !== '' && key.length >= 3) {
-          countDescriptionKeyWordsArray.push({
-            word: key,
-            occurrences: countDescriptionKeyWords[key],
-          });
+        const countDescriptionKeyWords = countKeyWords(videoDescriptions);
+        const countDescriptionKeyWordsArray = [];
+        for (let key in countDescriptionKeyWords) {
+          if (!/^[^a-zA-Z0-9]+$/.test(key) && key !== '' && key.length >= 3) {
+            countDescriptionKeyWordsArray.push({
+              word: key,
+              occurrences: countDescriptionKeyWords[key],
+            });
+          }
         }
+
+        // Verifica ocorrências de uma mesma palavra nos títulos e descrições
+        setTitleOccurrences(
+          countTitleKeyWordsArray.sort((a, b) =>
+            a.occurrences > b.occurrences ? -1 : b.occurrences > a.occurrences ? 1 : 0
+          )
+        );
+        setDescriptionOccurrences(
+          countDescriptionKeyWordsArray.sort((a, b) =>
+            a.occurrences > b.occurrences ? -1 : b.occurrences > a.occurrences ? 1 : 0
+          )
+        );
+
+        // Conversão de Minutos Bruta
+        setContinuousDays(convertMinutesToContinuousDays(allMinutes));
+
+        // Conversão Considerando Disponibilidade do Usuário
+        setSortedVideos(sortVideosConsideringDailyAvailability(videos, props.dailyAvailability));
+
+        setLoading(false);
+      } catch {
+        setError(true);
+        props.onClose();
       }
-
-      // Verifica ocorrências de uma mesma palavra nos títulos e descrições
-      setTitleOccurrences(
-        countTitleKeyWordsArray.sort((a, b) =>
-          a.occurrences > b.occurrences ? -1 : b.occurrences > a.occurrences ? 1 : 0
-        )
-      );
-      setDescriptionOccurrences(
-        countDescriptionKeyWordsArray.sort((a, b) =>
-          a.occurrences > b.occurrences ? -1 : b.occurrences > a.occurrences ? 1 : 0
-        )
-      );
-
-      // Conversão de Minutos Bruta
-      setContinuousDays(convertMinutesToContinuousDays(allMinutes));
-
-      // Conversão Considerando Disponibilidade do Usuário
-      setSortedVideos(sortVideosConsideringDailyAvailability(videos, props.dailyAvailability));
-
-      setLoading(false);
     }
 
     if (props.visible) {
       _getVideos();
     }
   }, [props]);
+
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setError(false);
+  };
+
+  function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
 
   return (
     <div style={{zIndex: 50000}}>
@@ -293,6 +314,114 @@ const SearchModal = (props) => {
                   </span>
                 </div>
               </div>
+
+              <div style={{padding: 16}}>
+                {sortedVideos.videosPerDay.map((day, index) => {
+                  return (
+                    <div
+                      key={index}
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        width: '-webkit-fill-available',
+                        marginTop: 24,
+                        paddingBottom: 16,
+                        borderBottom: '1px solid rgb(60, 60, 60)',
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          width: '-webkit-fill-available',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <span className="value" style={{textAlign: 'left', fontSize: 24}}>
+                          {day.day}º Dia de Reprodução
+                        </span>
+
+                        <div style={{display: 'flex', flexDirection: 'column'}}>
+                          <div style={{display: 'flex', flexDirection: 'column'}}>
+                            <span className="label" style={{textAlign: 'right'}}>
+                              Disponibilidade para este dia
+                            </span>
+                            <span className="value" style={{textAlign: 'right'}}>
+                              {day.dayAvailability} minutos
+                            </span>
+                          </div>
+                          <div style={{display: 'flex', flexDirection: 'column', marginTop: 12}}>
+                            <span className="label" style={{textAlign: 'right'}}>
+                              Duração total dos vídeos
+                            </span>
+                            <span className="value" style={{textAlign: 'right'}}>
+                              Cerca de {day.dayVideosDuration.toFixed(0)} minutos
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      {day.videos.map((video, _index) => (
+                        <a
+                          key={_index}
+                          href={`https://www.youtube.com/watch?v=${video.videoId}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="videoLink"
+                        >
+                          <div
+                            style={{
+                              display: 'flex',
+                              flexDirection: 'row',
+                              marginTop: 16,
+                              width: '-webkit-fill-available',
+                            }}
+                          >
+                            <img
+                              src={video.thumbnails.high.url}
+                              width={'20%'}
+                              height={'100%'}
+                              alt={video.title}
+                            />
+                            <div style={{display: 'flex', flexDirection: 'column', marginLeft: 16}}>
+                              <span
+                                className="value"
+                                style={{textAlign: 'left', fontSize: 16, fontWeight: 500}}
+                              >
+                                {video.title}
+                              </span>
+                              <span
+                                className="value"
+                                style={{
+                                  textAlign: 'left',
+                                  fontSize: 14,
+                                  fontWeight: 400,
+                                  marginTop: 4,
+                                  color: 'rgb(150,150,150)',
+                                }}
+                              >
+                                {video.channelTitle}
+                              </span>
+                              <span
+                                className="value"
+                                style={{
+                                  textAlign: 'left',
+                                  fontSize: 12,
+                                  fontWeight: 300,
+                                  marginTop: 4,
+                                  color: 'rgb(150,150,150)',
+                                }}
+                              >
+                                {video.description}
+                              </span>
+                            </div>
+                          </div>
+                        </a>
+                      ))}
+                    </div>
+                  );
+                })}
+              </div>
             </>
           ) : (
             <div
@@ -309,6 +438,12 @@ const SearchModal = (props) => {
           )}
         </div>
       </Rodal>
+
+      <Snackbar open={error} autoHideDuration={6000} onClose={handleSnackbarClose}>
+        <Alert onClose={handleSnackbarClose} severity="error">
+          Houve um erro ao processar a requisição. Tente novamente mais tarde.
+        </Alert>
+      </Snackbar>
     </div>
   );
 };
