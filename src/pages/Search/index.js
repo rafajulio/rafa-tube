@@ -11,6 +11,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import {
   convertMinutesToContinuousDays,
   sortVideosConsideringDailyAvailability,
+  countKeyWords,
 } from '../../util/helperFunctions';
 import Rodal from 'rodal';
 import './style.css';
@@ -134,6 +135,7 @@ export default Search;
 const SearchModal = (props) => {
   React.useEffect(() => {
     async function _getVideos() {
+      // TODO Try catch pra tratar exceção
       let videos = await getVideos(props.searchTerm);
       let allMinutes = 0;
 
@@ -151,7 +153,39 @@ const SearchModal = (props) => {
         allMinutes += video.duration.minutes;
       });
 
-      // Conversão Bruta
+      const videoTitles = videos.map((video) => video.title).join(' ');
+      const videoDescriptions = videos.map((video) => video.description).join(' ');
+
+      const countTitleKeyWords = countKeyWords(videoTitles);
+      const countTitleKeyWordsArray = [];
+      for (let key in countTitleKeyWords) {
+        countTitleKeyWordsArray.push({
+          word: key,
+          occurrences: countTitleKeyWords[key],
+        });
+      }
+
+      const countDescriptionKeyWords = countKeyWords(videoDescriptions);
+      const countDescriptionKeyWordsArray = [];
+      for (let key in countDescriptionKeyWords) {
+        countDescriptionKeyWordsArray.push({
+          word: key,
+          occurrences: countDescriptionKeyWords[key],
+        });
+      }
+
+      // TODO fazer tratamento para remover espaços e caracteres especiais da ocorrências.
+      // Verifica ocorrências de uma mesma palavra nos títulos e descrições
+      console.log({
+        titleOccurrences: countTitleKeyWordsArray.sort((a, b) =>
+          a.occurrences > b.occurrences ? -1 : b.occurrences > a.occurrences ? 1 : 0
+        ),
+        descriptionOccurences: countDescriptionKeyWordsArray.sort((a, b) =>
+          a.occurrences > b.occurrences ? -1 : b.occurrences > a.occurrences ? 1 : 0
+        ),
+      });
+
+      // Conversão de Minutos Bruta
       console.log(convertMinutesToContinuousDays(allMinutes));
 
       // Conversão Considerando Disponibilidade do Usuário
@@ -160,23 +194,6 @@ const SearchModal = (props) => {
 
     if (props.visible) {
       _getVideos();
-
-      //   function count(sentence) {
-      //     var list = sentence.split(' ');
-      //     var words = {};
-      //     for(var i = 0; i < list.length; i++) {
-      //         var word = list[i];
-      //         if (words.hasOwnProperty(word)) {
-      //             words[word]++;
-      //         } else {
-      //             words[word] = 1;
-      //         }
-      //     }
-      //     return words;
-      // }
-
-      // var display = count('ask a question get a question');
-      // console.log(display);
     }
   }, [props]);
 

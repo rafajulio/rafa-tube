@@ -119,3 +119,17 @@ export function sortVideosConsideringDailyAvailability(videos, dailyAvailability
     videosPerDay: _sortedVideosArray,
   };
 }
+
+export function countKeyWords(sentence) {
+  var list = sentence.split(' ');
+  var words = {};
+  for (var i = 0; i < list.length; i++) {
+    var word = list[i];
+    if (words.hasOwnProperty(word)) {
+      words[word]++;
+    } else {
+      words[word] = 1;
+    }
+  }
+  return words;
+}
