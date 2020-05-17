@@ -159,22 +159,25 @@ const SearchModal = (props) => {
       const countTitleKeyWords = countKeyWords(videoTitles);
       const countTitleKeyWordsArray = [];
       for (let key in countTitleKeyWords) {
-        countTitleKeyWordsArray.push({
-          word: key,
-          occurrences: countTitleKeyWords[key],
-        });
+        if (!/^[^a-zA-Z0-9]+$/.test(key) && key !== '' && key.length >= 3) {
+          countTitleKeyWordsArray.push({
+            word: key,
+            occurrences: countTitleKeyWords[key],
+          });
+        }
       }
 
       const countDescriptionKeyWords = countKeyWords(videoDescriptions);
       const countDescriptionKeyWordsArray = [];
       for (let key in countDescriptionKeyWords) {
-        countDescriptionKeyWordsArray.push({
-          word: key,
-          occurrences: countDescriptionKeyWords[key],
-        });
+        if (!/^[^a-zA-Z0-9]+$/.test(key) && key !== '' && key.length >= 3) {
+          countDescriptionKeyWordsArray.push({
+            word: key,
+            occurrences: countDescriptionKeyWords[key],
+          });
+        }
       }
 
-      // TODO fazer tratamento para remover espaços e caracteres especiais da ocorrências.
       // Verifica ocorrências de uma mesma palavra nos títulos e descrições
       console.log({
         titleOccurrences: countTitleKeyWordsArray.sort((a, b) =>
