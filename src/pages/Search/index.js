@@ -1,8 +1,11 @@
 import React from 'react';
-import TextField from '@material-ui/core/TextField';
 import {ThemeProvider} from '@material-ui/styles';
 import {theme, styles} from '../../util/material-ui-helper';
 import {getVideos} from '../../webservices/youTubeServices';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
 import Rodal from 'rodal';
@@ -55,30 +58,34 @@ const Search = (props) => {
     <div className="mainDiv">
       <ThemeProvider theme={theme}>
         <div className="searchWrapper">
-          <TextField
-            variant="outlined"
-            label="Termo da Busca do YouTube"
-            className={classes.textField}
-            fullWidth
-            size="small"
-            onChange={(event) => {
-              setSearchTerm(event.target.value);
-            }}
-            onKeyPress={(event) => {
-              if (event.key === 'Enter' && searchEnabled) setModalVisible(true);
-            }}
-          />
-
-          <IconButton
-            aria-label="search"
-            disabled={!searchEnabled}
-            style={{marginLeft: 8, width: 55, height: 55}}
-            onClick={() => {
-              setModalVisible(true);
-            }}
-          >
-            <SearchIcon />
-          </IconButton>
+          <FormControl variant="outlined" fullWidth className={classes.textField}>
+            <InputLabel>Termo de Busca do YouTube</InputLabel>
+            <OutlinedInput
+              value={searchTerm}
+              onChange={(event) => {
+                setSearchTerm(event.target.value);
+              }}
+              onKeyPress={(event) => {
+                if (event.key === 'Enter' && searchEnabled) setModalVisible(true);
+              }}
+              fullWidth
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="search"
+                    disabled={!searchEnabled}
+                    style={{marginLeft: 8, width: 55, height: 55}}
+                    onClick={() => {
+                      setModalVisible(true);
+                    }}
+                  >
+                    <SearchIcon />
+                  </IconButton>
+                </InputAdornment>
+              }
+              labelWidth={208}
+            />
+          </FormControl>
         </div>
       </ThemeProvider>
 
