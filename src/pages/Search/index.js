@@ -2,6 +2,7 @@ import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import {ThemeProvider} from '@material-ui/styles';
 import {theme, styles} from '../../util/material-ui-helper';
+import {getVideos} from '../../webservices/youTubeServices';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
 import Rodal from 'rodal';
@@ -119,6 +120,29 @@ const Search = (props) => {
 export default Search;
 
 const SearchModal = (props) => {
+  React.useEffect(() => {
+    if (props.visible) {
+      getVideos(props.searchTerm);
+
+      //   function count(sentence) {
+      //     var list = sentence.split(' ');
+      //     var words = {};
+      //     for(var i = 0; i < list.length; i++) {
+      //         var word = list[i];
+      //         if (words.hasOwnProperty(word)) {
+      //             words[word]++;
+      //         } else {
+      //             words[word] = 1;
+      //         }
+      //     }
+      //     return words;
+      // }
+
+      // var display = count('ask a question get a question');
+      // console.log(display);
+    }
+  }, [props]);
+
   return (
     <div style={{zIndex: 50000}}>
       <Rodal
