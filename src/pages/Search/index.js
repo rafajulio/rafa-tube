@@ -1,6 +1,6 @@
 import React from 'react';
 import {ThemeProvider} from '@material-ui/styles';
-import {theme, styles} from '../../util/material-ui-helper';
+import {theme, styles} from '../../util/materialUIHelper';
 import {getVideos} from '../../webservices/youTubeServices';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import FormControl from '@material-ui/core/FormControl';
@@ -8,6 +8,10 @@ import InputLabel from '@material-ui/core/InputLabel';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
+import {
+  convertMinutesToContinuousDays,
+  sortVideosConsideringDailyAvailability,
+} from '../../util/helperFunctions';
 import Rodal from 'rodal';
 import './style.css';
 
@@ -118,6 +122,7 @@ const Search = (props) => {
       <SearchModal
         visible={isModalVisible}
         searchTerm={searchTerm}
+        dailyAvailability={dailyAvailability}
         onClose={() => setModalVisible(false)}
       />
     </div>
@@ -128,8 +133,33 @@ export default Search;
 
 const SearchModal = (props) => {
   React.useEffect(() => {
+    async function _getVideos() {
+      let videos = await getVideos(props.searchTerm);
+      let allMinutes = 0;
+
+      videos = videos.filter(
+        (video) =>
+          video.duration.minutes <=
+          props.dailyAvailability[
+            Object.keys(props.dailyAvailability).reduce((a, b) =>
+              props.dailyAvailability[a] > props.dailyAvailability[b] ? a : b
+            )
+          ]
+      );
+
+      videos.forEach((video) => {
+        allMinutes += video.duration.minutes;
+      });
+
+      // Conversão Bruta
+      console.log(convertMinutesToContinuousDays(allMinutes));
+
+      // Conversão Considerando Disponibilidade do Usuário
+      console.log(sortVideosConsideringDailyAvailability(videos, props.dailyAvailability));
+    }
+
     if (props.visible) {
-      getVideos(props.searchTerm);
+      _getVideos();
 
       //   function count(sentence) {
       //     var list = sentence.split(' ');

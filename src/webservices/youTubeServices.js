@@ -1,8 +1,10 @@
 import axios from 'axios';
+import {parse, toSeconds} from 'iso8601-duration';
 
 export async function getVideos(query) {
   const totalItems = 200;
   const maxItems = 50;
+  const key = 'AIzaSyAWPWYeq0vpyGWPpAkFie3Pi7dH7Moe4Y0';
 
   let youTubeSearchItemsRetrieved = 0;
   let youTubeSearchItems = [];
@@ -12,7 +14,7 @@ export async function getVideos(query) {
 
   do {
     let response = await axios.get(
-      `https://www.googleapis.com/youtube/v3/search?part=id%2Csnippet&q=${query}&key=AIzaSyDTcUrbZIlkNOdNp8g9yJyp5Kn1ICJHhCg&maxResults=50&type=video&pageToken=${actualPageToken}`
+      `https://www.googleapis.com/youtube/v3/search?part=id%2Csnippet&q=${query}&key=${key}&maxResults=50&type=video&pageToken=${actualPageToken}`
     );
     response = response.data;
     actualPageToken = response.nextPageToken;
@@ -34,7 +36,7 @@ export async function getVideos(query) {
   await Promise.all(
     videoIdArray.map(async (searchString) => {
       let response = await axios.get(
-        `https://www.googleapis.com/youtube/v3/videos?part=id%2Csnippet%2CcontentDetails&key=AIzaSyDTcUrbZIlkNOdNp8g9yJyp5Kn1ICJHhCg&type=video&id=${searchString}`
+        `https://www.googleapis.com/youtube/v3/videos?part=id%2Csnippet%2CcontentDetails&key=${key}&type=video&id=${searchString}`
       );
       response = response.data;
       youTubeVideoItems = [...youTubeVideoItems, ...response.items];
@@ -54,7 +56,10 @@ export async function getVideos(query) {
       thumbnails: video.snippet.thumbnails,
       videoId: video.id.videoId,
       description: videoRequestItem.snippet.description,
-      duration: videoRequestItem.contentDetails.duration,
+      duration: {
+        raw: videoRequestItem.contentDetails.duration,
+        minutes: toSeconds(parse(videoRequestItem.contentDetails.duration)) / 60,
+      },
     });
   });
 

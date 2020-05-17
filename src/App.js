@@ -4,7 +4,7 @@ import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import {ThemeProvider} from '@material-ui/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import {theme} from './util/material-ui-helper';
+import {theme} from './util/materialUIHelper';
 import Search from './pages/Search';
 
 export const RafaTube = () => {
