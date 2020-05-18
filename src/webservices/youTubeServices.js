@@ -4,7 +4,7 @@ import {parse, toSeconds} from 'iso8601-duration';
 export async function getVideos(query) {
   const totalItems = 200;
   const maxItems = 50;
-  const key = 'AIzaSyC5xNTheygg2xc6C7bZkAHIysoEZ795E08'; // * Em uma build de produção, o ideal é utilizar uma variavel de ambiente para armazenar a chave de API.
+  const key = 'AIzaSyBLHKr7Mk-tMPpcKUWZm-_AgmlHp89V7aQ'; // * Em uma build de produção, o ideal é utilizar uma variavel de ambiente para armazenar a chave de API.
 
   let youTubeSearchItemsRetrieved = 0;
   let youTubeSearchItems = [];

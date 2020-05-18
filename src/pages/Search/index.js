@@ -251,15 +251,7 @@ const SearchModal = (props) => {
           backgroundColor: 'rgb(40, 40, 40)',
         }}
       >
-        <div
-          style={{
-            height: '100%',
-            width: '100%',
-            overflow: 'auto',
-            display: 'flex',
-            flexDirection: 'column',
-          }}
-        >
+        <div className="rodalInfoWrapper">
           {!loading ? (
             <>
               <div className="modalHeader">
@@ -285,15 +277,7 @@ const SearchModal = (props) => {
                 </div>
               </div>
 
-              <div
-                style={{
-                  marginTop: 32,
-                  marginBottom: 32,
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'space-evenly',
-                }}
-              >
+              <div className="keyWordsWrapper">
                 <div className="dayInfo">
                   <span className="label">
                     Cinco Palavras Mais Encontradas Nos <b>Títulos</b>
@@ -321,26 +305,8 @@ const SearchModal = (props) => {
               <div style={{padding: 16}}>
                 {sortedVideos.videosPerDay.map((day, index) => {
                   return (
-                    <div
-                      key={index}
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        width: '-webkit-fill-available',
-                        marginTop: 24,
-                        paddingBottom: 16,
-                        borderBottom: '1px solid rgb(60, 60, 60)',
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: 'flex',
-                          flexDirection: 'row',
-                          width: '-webkit-fill-available',
-                          justifyContent: 'space-between',
-                          alignItems: 'center',
-                        }}
-                      >
+                    <div key={index} className="videosWrapper">
+                      <div className="videosDailyInfo">
                         <span className="value" style={{textAlign: 'left', fontSize: 24}}>
                           {day.day}º Dia de Reprodução
                         </span>
@@ -372,21 +338,14 @@ const SearchModal = (props) => {
                           rel="noopener noreferrer"
                           className="videoLink"
                         >
-                          <div
-                            style={{
-                              display: 'flex',
-                              flexDirection: 'row',
-                              marginTop: 16,
-                              width: '-webkit-fill-available',
-                            }}
-                          >
+                          <div className="singleVideoWrapper">
                             <img
                               src={video.thumbnails.high.url}
                               width={'20%'}
                               height={'100%'}
                               alt={video.title}
                             />
-                            <div style={{display: 'flex', flexDirection: 'column', marginLeft: 16}}>
+                            <div className="singleVideoInfoWrapper">
                               <span
                                 className="value"
                                 style={{textAlign: 'left', fontSize: 16, fontWeight: 500}}
@@ -427,15 +386,7 @@ const SearchModal = (props) => {
               </div>
             </>
           ) : (
-            <div
-              style={{
-                width: '100%',
-                height: '100%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
+            <div className="circularLoading">
               <StyledCircularProgress size={80} />
             </div>
           )}

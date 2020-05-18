@@ -1,6 +1,6 @@
 {
-  "name": "test-ahgora",
-  "version": "0.1.0",
+  "name": "rafa-tube",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.9.14",
