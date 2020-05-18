@@ -65,6 +65,7 @@ Após ativar a API para o seu projeto, você precisará criar as credenciais par
 
 Então você terá de responder um simples questionário acerca do projeto que irá utilizar a chave. Você deve informar qual API a chave ira consumir (YouTube Data API v3), de onde você fará as requisições (Navegador da Web) e indicar quais dados você acessará (Dados Públicos). Depois de finalizar o questionário, aperte no botão "Preciso de quais credenciais?" para prosseguir.
 ?
+
 ![console.cloud.google.questionarie](https://i.imgur.com/Bf21T24.png)
 
 Pronto, se você seguiu todos os passos a plataforma deve lhe conceder uma chave para utilizar a API. :)
