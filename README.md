@@ -31,7 +31,7 @@ Após todas as informações necessárias serem preenchidas o botão de pesquisa
 
 ### Tela de Busca - Modal
 
-![MockUpModal](https://i.imgur.com/rRuYhoB.png)
+![MockUpModal](https://i.imgur.com/ke8z7Vv.png)
 Após clicar no botão de busca, a aplicação irá fazer requisições a [API de dados do YouTube](https://developers.google.com/youtube/v3) para que os dados possam ser tratados e as informações sejam exibidas em um modal.
 
 
