@@ -1,68 +1,37 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# RafaTube
+O RafaTube é uma aplicação web desenvolvida em React para o teste de Desenvolvedor da empresa Ahgora. O desafio consiste no desenvolvimento de uma aplicação que utilize um termo de busca para procurar e exibir videos do YouTube, bem como mostrar as 5 palavras mais utilizadas em titulos e descrições dos videos encontrados e por fim indique quantos dias são necessários para ver todos os videos tendo as seguintes condições: 
 
-## Available Scripts
+ * O Usuário deve inserir quanto tempo ele pode gastar diáriamente pela semana em minutos;
+ * O Usuário não irá gastar mais tempo vendo vídeos do que o seu maximo por dia;
+ * O Usuário não irá começar outro vídeo a não ser que ele possa termina-lo no mesmo dia;
+ * Vídeos com uma duração superior ao maior tempo disponivel pelo usuário serão desconsiderados;
+ * O Usuário assistirá os vídeos na ordem exata que a busca retornar;
+ * Somente os primerios 200 vídeos serão considerados.
 
-In the project directory, you can run:
+## Rodando o projeto
+O aplicativo foi desenvolvido na versão 16.13.1 do React.
 
-### `yarn start`
+Para instalar as dependências do projeto, primeiro é necessário fazer o download do [yarn](https://yarnpkg.com/).
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Após instalar o yarn e clonar o repositório, utilize o seguinte comando no diretório do projeto para instalar as dependências necessárias:
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+	$ yarn
 
-### `yarn test`
+Após todas as dependências serem instaladas, utilize o comando a seguir para rodar o projeto:
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+	$ yarn start
+O projeto estará disponivel no endereço localhost:3000 porém uma versão online pode ser utilizada [aqui](http://rafa-tube.herokuapp.com/).
 
-### `yarn build`
+## Telas
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Tela de Busca
+![MockUp](https://i.imgur.com/GdX1yh9.jpg)
+A tela de busca é a única tela do projeto, onde podem ser definidos os minutos diários que o usuário dispõe para assistir aos vídeos e também onde ele define o termo que será pesquisado no youtube.
+Após todas as informações necessárias serem preenchidas o botão de pesquisar fica habilitado.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+### Tela de Busca - Modal
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+![MockUpModal](https://i.imgur.com/rRuYhoB.png)
+Após clicar no botão de busca, a aplicação irá fazer requisições a [API de dados do YouTube](https://developers.google.com/youtube/v3) para que os dados possam ser tratados e as informações sejam exibidas em um modal.
 
-### `yarn eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
