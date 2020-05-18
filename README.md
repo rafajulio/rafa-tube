@@ -11,15 +11,22 @@ O RafaTube é uma aplicação web desenvolvida em React para o teste de Desenvol
 ## Rodando o projeto
 O aplicativo foi desenvolvido na versão 16.13.1 do React.
 
-Para instalar as dependências do projeto, primeiro é necessário fazer o download do [yarn](https://yarnpkg.com/).
+Para instalar as dependências do projeto, primeiro é necessário utilizar um gerenciador de pacotes como [yarn](https://yarnpkg.com/) ou [npm](https://www.npmjs.com/). Durante o desenvolvimento do projeto foi utilizado o yarn.
 
-Após instalar o yarn e clonar o repositório, utilize o seguinte comando no diretório do projeto para instalar as dependências necessárias:
+Após instalar o gerenciador e clonar o repositório, utilize um dos seguintes comandos no diretório do projeto para instalar as dependências necessárias:
 
 	$ yarn
+ou
 
-Após todas as dependências serem instaladas, utilize o comando a seguir para rodar o projeto:
+	$ npm install
+	
+Após todas as dependências serem instaladas, utilize um dos comandos a seguir para rodar o projeto:
 
 	$ yarn start
+ou
+
+	$ npm start
+	
 O projeto estará disponivel no endereço localhost:3000 porém uma versão online pode ser utilizada [aqui](http://rafa-tube.herokuapp.com/).
 
 ## Telas
